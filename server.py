@@ -1,0 +1,43 @@
+from flask import Flask,request,jsonify
+from flask_cors import CORS
+from multiprocessing import Pool
+from YoutubeAnalyzer import getAndPredictVideoById
+
+app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+@app.route("/api/video", methods = ['POST'])
+def getCommentsForVideo(): 
+
+    try :
+        videoID = request.form["videoID"]
+        video_res = getAndPredictVideoById(videoID,report=True)
+        return jsonify(video_res)
+
+    except Exception as e :
+        print(e)
+        return {"error" : "sorry, something went wrong. We couldn't process this video's comment"}
+
+@app.route("/api/videos", methods = ['POST'])
+def getLabelForVideos() :
+    try : 
+        videoIds = request.form["videoIDs"]
+        videoIds = videoIds.split(",")
+
+        video_res = []
+
+        with Pool() as p:
+            video_res = p.map(getAndPredictVideoById, videoIds)
+
+        # for videoID in videoIds : 
+        #     video_res.append(getAndPredictVideoById(videoID))
+
+        return jsonify(video_res)
+
+    except Exception as e :
+        print(e)
+        return {"error" : "sorry, something went wrong. We couldn't process this video's comment"}
+
+
+if __name__ == "__main__" :
+    app.run(debug=True)
