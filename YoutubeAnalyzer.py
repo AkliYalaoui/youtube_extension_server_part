@@ -32,9 +32,9 @@ def getAndPredictVideoById(videoID,report=False) :
             comments.append({"comment" : comment,
                             "class": cl,
                             "score" : sentiment_dict["compound"],
-                            "Negative": sentiment_dict['neg']*100,
-                            "Neutral" : sentiment_dict['neu']*100,
-                            "Positive" :  sentiment_dict["pos"] *100
+                            "Negative": round(sentiment_dict['neg']*100,2),
+                            "Neutral" : round(sentiment_dict['neu']*100,2),
+                            "Positive" :  round(sentiment_dict["pos"] *100,2)
                             })
             cpt += 1
         if "nextPageToken" not in data or n_iter > 10 : 
@@ -54,8 +54,9 @@ def getAndPredictVideoById(videoID,report=False) :
             "neutral" : round(ctr["Neutral"] * 100 / cpt,2),
             "top_comments" : sorted(comments,key=lambda c : c["score"],reverse=True)[:10],
             "worse_comments" : sorted(comments,key=lambda c : c["score"])[:10],
-            "bar_chart_data" : list(map(lambda c : c['class'],comments)),
-            "histogramm_data" : list(map(lambda c : c['score'],comments)),
+            "donut_chart_data" : [ctr["Positive"],ctr["Negative"],ctr["Neutral"]],
+            "bar_chart_data" : [["Polarity","Number of comments"],["Positive",ctr["Positive"]],["Negative",ctr["Negative"]],["Neutral",ctr["Neutral"]]],
+            "histogramm_data" : list(map(lambda c : [c["class"],c['score']],comments)),
         }
     else : 
          video_res = {

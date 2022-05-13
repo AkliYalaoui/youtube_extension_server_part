@@ -10,13 +10,13 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 def getCommentsForVideo(): 
 
     try :
-        videoID = request.form["videoID"]
+        videoID = request.json["videoID"]
         video_res = getAndPredictVideoById(videoID,report=True)
         return jsonify(video_res)
 
     except Exception as e :
         print(e)
-        return {"error" : "sorry, something went wrong. We couldn't process this video's comment"}
+        return {"error" : "sorry,We couldn't process this video's comment, please verify your video ID and try again"}
 
 @app.route("/api/videos", methods = ['POST'])
 def getLabelForVideos() :
@@ -36,7 +36,7 @@ def getLabelForVideos() :
 
     except Exception as e :
         print(e)
-        return {"error" : "sorry, something went wrong. We couldn't process this video's comment"}
+        return {"error" : "sorry,We couldn't process this video's comment, please verify your video ID and try again"}
 
 
 if __name__ == "__main__" :
