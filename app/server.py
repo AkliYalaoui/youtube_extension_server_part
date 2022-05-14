@@ -25,7 +25,7 @@ def getCommentsForVideo():
 @app.route("/api/videos", methods = ['POST'])
 def getLabelForVideos() :
     try : 
-        videoIds = request.form["videoIDs"]
+        videoIds = request.json["videoIDs"]
         videoIds = videoIds.split(",")
 
         video_res = []
