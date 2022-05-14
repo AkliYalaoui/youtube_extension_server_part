@@ -6,6 +6,10 @@ from YoutubeAnalyzer import getAndPredictVideoById
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+@app.route("/",methods=['GET'])
+def home() :
+    return {"msg":"api working fine"}
+    
 @app.route("/api/video", methods = ['POST'])
 def getCommentsForVideo(): 
 
