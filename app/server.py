@@ -1,7 +1,7 @@
 from flask import Flask,request,jsonify
 from flask_cors import CORS
 from multiprocessing import Pool
-from YoutubeAnalyzer import getAndPredictVideoById
+from app.YoutubeAnalyzer import getAndPredictVideoById
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
